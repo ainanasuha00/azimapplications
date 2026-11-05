@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Explorer's Map | Year 4 English</title>
+<style>
+:root{--navy:#193B4A;--teal:#70AEB0;--ivory:#F7F5EF;--coral:#F2A083;--yellow:#F3D987;--sage:#A9C6A5;--ink:#294d58;--muted:#60777c;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--ivory);color:var(--navy);font-family:"Nunito Sans",Arial,sans-serif;line-height:1.6}
+h1,h2,h3,button{font-family:Poppins,Arial,sans-serif;line-height:1.2}button{cursor:pointer}
+header{position:sticky;top:0;z-index:5;background:var(--navy);color:white;box-shadow:0 4px 18px #193b4a20}
+.header-inner{max-width:1180px;margin:auto;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-weight:800;font-family:Poppins,Arial,sans-serif;white-space:nowrap}.brand span{color:var(--yellow)}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+nav button{border:0;background:transparent;color:#fff;padding:10px 13px;border-radius:10px;font-size:13px;font-weight:700}
+nav button:hover,nav button.active{background:#ffffff22;color:var(--yellow)}
+main{max-width:1180px;margin:auto;padding:30px 22px 65px}
+.hero{background:var(--navy);color:white;border-radius:26px;padding:45px 38px;display:grid;grid-template-columns:1.15fr .85fr;gap:25px;align-items:center;overflow:hidden}
+.eyebrow{color:#b9dddd;text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:800}
+.hero h1{font-size:clamp(34px,5vw,56px);margin:12px 0}.hero p{max-width:620px;color:#e5eeee;font-size:18px}
+.hero-art{font-size:clamp(65px,10vw,115px);text-align:center;letter-spacing:8px;background:#ffffff12;border-radius:22px;padding:28px 10px}
+.btn{border:0;border-radius:12px;padding:12px 17px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.primary{background:var(--coral);color:var(--navy)}.secondary{background:var(--teal);color:var(--navy)}.light{background:#fff;color:var(--navy);border:1px solid #d8e6e2}
+.section{margin-top:36px}.section-heading{margin-bottom:18px}.section-heading h2{margin:5px 0;font-size:29px}.section-heading p{margin:0;color:var(--muted)}
+.activity-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.activity-card,.panel{background:white;border:1px solid #193b4a12;border-radius:20px;padding:23px;box-shadow:0 8px 25px #193b4a0b}
+.activity-card{display:flex;flex-direction:column;min-height:255px}.activity-icon{font-size:38px}.activity-card h3{font-size:19px;margin:12px 0 7px}.activity-card p{color:var(--muted);margin:0 0 17px;flex:1}.activity-card .btn{align-self:flex-start}
+.page{display:none}.page.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
+.page-title{font-size:clamp(28px,4vw,40px);margin:8px 0}.lead{color:var(--muted);max-width:800px}
+.instruction{background:#fff8df;border-left:5px solid #d5ad4e;border-radius:13px;padding:17px 20px;margin:20px 0}
+.instruction h3{margin:0 0 8px;font-size:17px}.instruction ol{margin:0;padding-left:22px}.instruction li{padding:3px 0}
+.town-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:20px}
+.place{border:2px solid #e0ece8;background:#fbfdfb;border-radius:15px;padding:15px 10px;text-align:center;min-height:126px;color:var(--navy)}
+.place:hover,.place.selected{border-color:var(--teal);background:#edf7f3}.place .emoji{display:block;font-size:33px}.place strong{display:block;margin-top:5px}
+.detail{margin-top:15px;background:#eaf4f0;border-radius:13px;padding:15px;min-height:70px}
+.word-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.word-card{border:1px solid #e1ece8;border-radius:15px;padding:18px;background:#fbfdfb}.arrow{font-size:36px;color:#397c7f;font-weight:900}.word-card h3{font-size:18px;margin:5px 0}.word-card p{margin:4px 0;color:var(--muted)}
+.audio-box{background:#edf5f2;border-radius:18px;padding:22px;margin:18px 0}.audio-controls{display:flex;gap:9px;flex-wrap:wrap}
+.question{background:#fff;border:1px solid #e0ece8;border-radius:15px;padding:17px;margin:13px 0}.question h3{font-size:16px;margin:0 0 12px}.answers{display:flex;gap:8px;flex-wrap:wrap}.answer{background:#fff;border:2px solid #d8e7e4;border-radius:10px;padding:10px 14px;color:var(--navy);font-weight:700}.answer.selected{background:#d9eeea;border-color:#397c7f}.feedback{margin-top:12px;font-weight:800;min-height:24px}.embed-wrap{background:#fff;border:1px solid #dce9e5;border-radius:18px;overflow:hidden;margin-top:20px}.embed-top{padding:14px 17px;background:#edf5f2;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.embed-top p{margin:0;color:var(--muted);font-size:14px}.embed-frame{width:100%;height:680px;border:0;display:block;background:#fff}.external-note{font-size:13px;color:var(--muted);margin-top:12px;overflow-wrap:anywhere}.external-note a{color:#176b70;font-weight:800;text-decoration:underline}
+footer{background:var(--navy);color:#fff;padding:28px 22px;text-align:center}footer p{margin:4px;color:#dce9e6}
+@media(max-width:850px){.activity-grid{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.hero-art{padding:15px}.word-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:580px){.header-inner{align-items:flex-start;flex-direction:column}.activity-grid,.town-grid,.word-grid{grid-template-columns:1fr 1fr}main{padding:22px 14px 45px}.hero{padding:30px 22px}.embed-frame{height:600px}nav button{padding:8px 9px}}
+</style>
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">🧭 THE EXPLORER'S <span>MAP</span></div>
+  <nav aria-label="Main navigation">
+    <button class="nav-btn active" data-page="home">Home</button>
+    <button class="nav-btn" data-page="canva">1. Canva Activity</button>
+    <button class="nav-btn" data-page="wordwall">2. Wordwall</button>
+    <button class="nav-btn" data-page="genially">3. Genially</button>
+  </nav>
+</div></header>
+<main>
+<section id="home" class="page active">
+  <div class="hero">
+    <div><span class="eyebrow">Year 4 English • Asking for and Giving Directions</span>
+      <h1>Explore the Town.<br>Find Your Way!</h1>
+      <p>Hello, young explorers! Today, you will discover places in town, learn useful direction words and help a tourist find the right way.</p>
+      <button class="btn primary" data-go="canva">START YOUR ADVENTURE →</button>
+    </div>
+    <div class="hero-art" aria-hidden="true">🏫 🏥<br>🌳 🧭 📚</div>
+  </div>
+  <section class="section">
+    <div class="section-heading"><span class="eyebrow">YOUR LEARNING JOURNEY</span><h2>Three fun activities</h2><p>Complete the activities in order. Read the instructions before you begin.</p></div>
+    <div class="activity-grid">
+      <article class="activity-card"><div class="activity-icon">🗺️</div><span class="eyebrow">ACTIVITY 1</span><h3>Discover, Learn & Listen</h3><p>Explore the town, learn place names and direction words, then listen and follow directions.</p><button class="btn secondary" data-go="canva">LET'S EXPLORE</button></article>
+      <article class="activity-card"><div class="activity-icon">👀</div><span class="eyebrow">ACTIVITY 2</span><h3>Where Am I?</h3><p>Read the clues and choose the correct place in town in the Wordwall game.</p><button class="btn secondary" data-go="wordwall">PLAY WORDWALL</button></article>
+      <article class="activity-card"><div class="activity-icon">🧭</div><span class="eyebrow">ACTIVITY 3</span><h3>Route Rescue: The Lost Tourist</h3><p>Use what you have learned to help a tourist find the right places.</p><button class="btn secondary" data-go="genially">PLAY GENIALLY</button></article>
+    </div>
+  </section>
+  <section class="section panel">
+    <h2>Our learning goal</h2>
+    <p>By the end of these activities, you should be able to name familiar places, understand simple directions and use direction words to guide someone.</p>
+  </section>
+</section>
+
+<section id="canva" class="page">
+  <span class="eyebrow">ACTIVITY 1 OF 3</span><h1 class="page-title">Discover, Learn & Listen</h1>
+  <p class="lead">Let's explore our town and learn how to give directions. Complete the three small steps below.</p>
+  <div class="instruction"><h3>How to complete this activity</h3><ol>
+    <li>First, look carefully at the town map and find the places you know.</li>
+    <li>Next, choose a building to learn its name and what people do there.</li>
+    <li>Then, read and say the direction words aloud.</li>
+    <li>Finally, listen to the directions and answer the questions.</li>
+  </ol></div>
+  <section class="section">
+    <div class="section-heading"><span class="eyebrow">STEP 1</span><h2>Discover the Town</h2><p>Tap a place on the map to discover what it is.</p></div>
+    <div class="town-grid" id="town-grid">
+      <button class="place" data-name="School" data-info="A school is a place where children learn."><span class="emoji">🏫</span><strong>School</strong></button>
+      <button class="place" data-name="Hospital" data-info="A hospital is a place where doctors and nurses help sick people."><span class="emoji">🏥</span><strong>Hospital</strong></button>
+      <button class="place" data-name="Library" data-info="A library is a place where people read and borrow books."><span class="emoji">📚</span><strong>Library</strong></button>
+      <button class="place" data-name="Park" data-info="A park is a place where people play and enjoy nature."><span class="emoji">🌳</span><strong>Park</strong></button>
+      <button class="place" data-name="Police Station" data-info="A police station is where police officers work and help people."><span class="emoji">🚓</span><strong>Police Station</strong></button>
+      <button class="place" data-name="Supermarket" data-info="A supermarket is a place where people buy food and other things."><span class="emoji">🛒</span><strong>Supermarket</strong></button>
+      <button class="place" data-name="Post Office" data-info="A post office is a place where people send letters and parcels."><span class="emoji">✉️</span><strong>Post Office</strong></button>
+      <button class="place" data-name="Restaurant" data-info="A restaurant is a place where people buy and eat meals."><span class="emoji">🍽️</span><strong>Restaurant</strong></button>
+    </div>
+    <div class="detail" id="place-detail" aria-live="polite">Choose a place to see its name and description. 😊</div>
+  </section>
+  <section class="section">
+    <div class="section-heading"><span class="eyebrow">STEP 2</span><h2>Learn the Direction Words</h2><p>Look at each symbol. Say the expression aloud and remember what it means.</p></div>
+    <div class="word-grid">
+      <article class="word-card"><div class="arrow">↑</div><h3>Go straight</h3><p>Keep moving forward.</p></article>
+      <article class="word-card"><div class="arrow">←</div><h3>Turn left</h3><p>Change direction to your left.</p></article>
+      <article class="word-card"><div class="arrow">→</div><h3>Turn right</h3><p>Change direction to your right.</p></article>
+      <article class="word-card"><div class="arrow">↔</div><h3>Cross the road</h3><p>Move safely to the other side.</p></article>
+      <article class="word-card"><div class="arrow">▣ ▣</div><h3>Next to</h3><p>Beside another place.</p></article>
+      <article class="word-card"><div class="arrow">▣ ⇆ ▣</div><h3>Opposite</h3><p>Across from another place.</p></article>
+    </div>
+  </section>
+  <section class="section">
+    <div class="section-heading"><span class="eyebrow">STEP 3</span><h2>Listen & Navigate</h2><p>Listen to the directions. You can play them again.</p></div>
+    <div class="audio-box">
+      <p><strong>Listen carefully:</strong> Start at the school. Go straight. Turn left at the park. The hospital is on your right.</p>
+      <div class="audio-controls"><button class="btn secondary" id="play-audio">▶ PLAY DIRECTIONS</button><button class="btn light" id="replay-audio">↻ PLAY AGAIN</button></div>
+      <p id="audio-status" class="external-note" aria-live="polite">Press play to hear the directions.</p>
+    </div>
+    <div class="question" data-q="0"><h3>1. Where does the journey start?</h3><div class="answers"><button class="answer">School</button><button class="answer">Library</button><button class="answer">Post Office</button></div></div>
+    <div class="question" data-q="1"><h3>2. Which direction should you turn?</h3><div class="answers"><button class="answer">Turn right</button><button class="answer">Turn left</button><button class="answer">Go backwards</button></div></div>
+    <div class="question" data-q="2"><h3>3. What is the final destination?</h3><div class="answers"><button class="answer">Park</button><button class="answer">Hospital</button><button class="answer">Restaurant</button></div></div>
+    <button class="btn primary" id="check-listening">CHECK MY ANSWERS</button><p class="feedback" id="listen-feedback" aria-live="polite"></p>
+  </section>
+  <div class="section"><button class="btn light" data-go="home">← BACK TO HOME</button><button class="btn secondary" data-go="wordwall">NEXT: WORDWALL →</button></div>
+</section>
+
+<section id="wordwall" class="page">
+  <span class="eyebrow">ACTIVITY 2 OF 3</span><h1 class="page-title">Where Am I?</h1>
+  <p class="lead">Let's play the Wordwall game! Read each clue and find the correct place in town.</p>
+  <div class="instruction"><h3>How to play</h3><ol>
+    <li>First, click the <strong>Start</strong> button in the game below.</li>
+    <li>Next, read the clue carefully.</li>
+    <li>Then, choose the place that matches the clue.</li>
+    <li>Keep going until you finish the game. Do your best!</li>
+  </ol></div>
+  <div class="embed-wrap">
+    <div class="embed-top"><div><strong>Wordwall: Where Am I?</strong><p>Read the clue and choose the correct answer.</p></div><a class="btn primary" href="https://wordwall.net/resource/123111487?wwmethod=link" target="_self" rel="noopener noreferrer" aria-label="Open the Wordwall activity">OPEN WORDWALL ↗</a></div>
+    <iframe class="embed-frame" src="https://wordwall.net/resource/123111487?wwmethod=link" title="Wordwall game: Where Am I?" loading="lazy" allowfullscreen></iframe>
+  </div>
+  <p class="external-note">If the game does not load inside this page, use the button above to open Wordwall directly. You can also open this direct link: <a href="https://wordwall.net/resource/123111487?wwmethod=link" target="_self" rel="noopener noreferrer">https://wordwall.net/resource/123111487?wwmethod=link</a></p>
+  <div class="section"><button class="btn light" data-go="canva">← BACK</button><button class="btn secondary" data-go="genially">NEXT: ROUTE RESCUE →</button></div>
+</section>
+
+<section id="genially" class="page">
+  <span class="eyebrow">ACTIVITY 3 OF 3</span><h1 class="page-title">Route Rescue: The Lost Tourist</h1>
+  <p class="lead">A tourist is lost in our town! Become a helpful guide and help the tourist find the right places.</p>
+  <div class="instruction"><h3>How to play</h3><ol>
+    <li>First, read the mission carefully.</li>
+    <li>Next, look at the map and the choices on the screen.</li>
+    <li>Then, choose the correct route to help the tourist.</li>
+    <li>Complete each challenge and try to rescue the tourist. Good luck, explorer!</li>
+  </ol></div>
+  <div class="embed-wrap">
+    <div class="embed-top"><div><strong>Genially: Route Rescue – The Lost Tourist</strong><p>Use your direction words to guide the tourist.</p></div><a class="btn primary" href="https://view.genially.com/6aebd5b058c0b5120094a107" target="_self" rel="noopener noreferrer" aria-label="Open the Genially activity">OPEN GENIALLY ↗</a></div>
+    <iframe class="embed-frame" src="https://view.genially.com/6aebd5b058c0b5120094a107" title="Genially game: Route Rescue - The Lost Tourist" loading="lazy" allowfullscreen></iframe>
+  </div>
+  <p class="external-note">If the activity does not load inside this page, use the button above to open Genially directly. You can also open this direct link: <a href="https://view.genially.com/6aebd5b058c0b5120094a107" target="_self" rel="noopener noreferrer">https://view.genially.com/6aebd5b058c0b5120094a107</a></p>
+  <div class="section panel"><h2>Well done, young explorer! 🎉</h2><p>You have completed all three activities. Remember to use polite words and clear directions when helping someone find a place.</p><button class="btn light" data-go="home">BACK TO HOME</button></div>
+</section>
+</main>
+<footer><strong>THE EXPLORER'S MAP</strong><p>Navigate. Discover. Communicate.</p><p>Year 4 English learning activities</p></footer>
+<script>
+const pages=["home","canva","wordwall","genially"];
+function showPage(id){
+  pages.forEach(p=>document.getElementById(p).classList.toggle("active",p===id));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-page], [data-go]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page||b.dataset.go)));
+document.querySelectorAll(".place").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".place").forEach(x=>x.classList.remove("selected"));
+  b.classList.add("selected");
+  document.getElementById("place-detail").innerHTML="<strong>"+b.dataset.name+":</strong> "+b.dataset.info;
+}));
+const listeningText="Start at the school. Go straight. Turn left at the park. The hospital is on your right.";
+function playDirections(){
+  const status=document.getElementById("audio-status");
+  if(!("speechSynthesis" in window)){status.textContent="Audio is not available in this browser. Ask your teacher to read the directions aloud.";return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(listeningText);u.lang="en-GB";u.rate=.82;
+  u.onstart=()=>status.textContent="Listening...";u.onend=()=>status.textContent="Well done! You can listen again.";
+  speechSynthesis.speak(u);
+}
+document.getElementById("play-audio").addEventListener("click",playDirections);
+document.getElementById("replay-audio").addEventListener("click",playDirections);
+const correct=[0,1,1];
+document.querySelectorAll(".question").forEach((q,i)=>{
+  q.querySelectorAll(".answer").forEach((b,j)=>b.addEventListener("click",()=>{
+    q.dataset.answer=j;
+    q.querySelectorAll(".answer").forEach(x=>x.classList.remove("selected"));
+    b.classList.add("selected");
+  }));
+});
+document.getElementById("check-listening").addEventListener("click",()=>{
+  const qs=[...document.querySelectorAll(".question")];
+  if(qs.some(q=>q.dataset.answer===undefined)){document.getElementById("listen-feedback").textContent="Please answer all three questions first.";return;}
+  const score=qs.filter((q,i)=>Number(q.dataset.answer)===correct[i]).length;
+  document.getElementById("listen-feedback").textContent=score===3?"Excellent! You followed all the directions correctly! 🌟":`Good try! You got ${score} out of 3. Listen again and try once more.`;
+});
+</script>
+</body>
+</html>
