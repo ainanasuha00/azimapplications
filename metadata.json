@@ -1,0 +1,8 @@
+{
+  "name": "Remix The Explorer\u0027s Map",
+  "description": "Year 4 English learning adventure: discover places, master directions, listen and navigate, and explore Wordwall \u0026 Genially quests.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
