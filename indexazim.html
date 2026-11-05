@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Explorer's Map | Complete Application Source</title>
+<style>
+:root {
+  --navy: #193B4A;
+  --teal: #70AEB0;
+  --ivory: #F7F5EF;
+  --coral: #F2A083;
+  --yellow: #F3D987;
+  --sage: #A9C6A5;
+  --ink: #294d58;
+  --muted: #60777c;
+  --border: #dfece8;
+  --white: #ffffff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--navy);
+  font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+}
+h1, h2, h3, h4, button {
+  font-family: Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.2;
+}
+button { cursor: pointer; }
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--navy);
+  color: white;
+  box-shadow: 0 4px 18px rgba(25, 59, 74, 0.15);
+}
+.header-inner {
+  max-width: 1180px;
+  margin: auto;
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  font-weight: 800;
+  white-space: nowrap;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand span { color: var(--yellow); }
+.compass-badge {
+  background: #132F3B;
+  border: 1px solid #264F61;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+nav button {
+  border: 1px solid #264958;
+  background: transparent;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+nav button:hover, nav button.active {
+  background: #234B5C;
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+main {
+  max-width: 1180px;
+  margin: auto;
+  padding: 30px 22px 65px;
+}
+.hero {
+  background: var(--navy);
+  color: white;
+  border-radius: 26px;
+  padding: 40px 36px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 25px;
+  align-items: center;
+}
+.eyebrow {
+  color: #b9dddd;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 800;
+}
+.hero h1 {
+  font-size: clamp(32px, 4.5vw, 52px);
+  margin: 10px 0;
+}
+.hero p {
+  max-width: 620px;
+  color: #e5eeee;
+  font-size: 16px;
+}
+.hero-art {
+  font-size: clamp(45px, 8vw, 85px);
+  text-align: center;
+  letter-spacing: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  padding: 24px 10px;
+}
+.badge-strip {
+  display: flex;
+  justify-content: space-around;
+  background: #132F3B;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 16px 0;
+  font-size: 13px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 800;
+  font-size: 13.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+.btn:hover { opacity: 0.9; }
+.primary { background: var(--coral); color: var(--navy); }
+.secondary { background: var(--teal); color: var(--navy); }
+.light { background: #fff; color: var(--navy); border: 1px solid #d8e6e2; }
+
+.section { margin-top: 36px; }
+.section-heading h2 { margin: 4px 0; font-size: 26px; }
+.section-heading p { margin: 0; color: var(--muted); }
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+.activity-card, .panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(25, 59, 74, 0.04);
+}
+.activity-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+}
+.activity-icon { font-size: 36px; }
+.activity-card h3 { font-size: 18px; margin: 10px 0 6px; }
+.activity-card p { color: var(--muted); margin: 0 0 16px; flex: 1; font-size: 13px; }
+
+.page { display: none; }
+.page.active { display: block; animation: fade 0.25s ease; }
+@keyframes fade { from { opacity: 0.35; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.page-title { font-size: clamp(26px, 3.5vw, 36px); margin: 6px 0; }
+.lead { color: var(--muted); max-width: 800px; }
+
+.instruction {
+  background: #FFF9E8;
+  border: 1px solid #F0DE9F;
+  border-left: 5px solid #d5ad4e;
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin: 18px 0;
+}
+.instruction h3 { margin: 0 0 8px; font-size: 16px; }
+.instruction ol { margin: 0; padding-left: 20px; font-size: 13.5px; }
+
+.town-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.place {
+  border: 2px solid var(--border);
+  background: #fbfdfb;
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-align: center;
+  color: var(--navy);
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+.place:hover, .place.selected {
+  border-color: var(--teal);
+  background: #edf7f3;
+}
+.place .emoji { display: block; font-size: 30px; }
+
+.detail {
+  margin-top: 14px;
+  background: #eaf4f0;
+  border: 1px solid #d4e7e2;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.word-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  background: #fff;
+  cursor: pointer;
+}
+.word-card:hover { border-color: var(--teal); }
+.arrow { font-size: 28px; color: var(--teal); font-weight: 900; }
+.word-card h3 { font-size: 16px; margin: 4px 0; }
+.word-card p { margin: 0; color: var(--muted); font-size: 12px; }
+
+.audio-box {
+  background: #edf5f2;
+  border: 1px solid #d4e6e1;
+  border-radius: 18px;
+  padding: 20px;
+  margin: 18px 0;
+}
+.audio-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+.question {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.question h3 { font-size: 15px; margin: 0 0 10px; }
+.answers { display: flex; gap: 8px; flex-wrap: wrap; }
+.answer {
+  background: #fff;
+  border: 1.5px solid #d8e7e4;
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 13px;
+}
+.answer.selected { background: #d9eeea; border-color: var(--teal); }
+.answer.correct { background: #E3F7EB; border-color: #3DA668; }
+.answer.wrong { background: #FFECE5; border-color: var(--coral); }
+
+.feedback {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+.feedback.success { background: #E3F7EB; color: var(--navy); }
+.feedback.error { background: #FFF2EC; color: var(--navy); }
+
+.embed-wrap {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 18px;
+}
+.embed-top {
+  padding: 12px 16px;
+  background: #edf5f2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.embed-top p { margin: 0; color: var(--muted); font-size: 12px; }
+.embed-frame { width: 100%; height: 550px; border: 0; display: block; background: #fff; }
+
+.sim-box {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 18px;
+}
+.sim-card {
+  background: #F7FAF9;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 12px 0;
+}
+
+footer {
+  background: var(--navy);
+  color: #fff;
+  padding: 28px 22px;
+  text-align: center;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  margin-top: 40px;
+}
+footer p { margin: 4px; color: #dce9e6; font-size: 13px; }
+.author-tag {
+  background: #1E4657;
+  border: 1px solid #2E5E73;
+  color: var(--yellow);
+  padding: 6px 14px;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  margin: 10px 0;
+}
+.disclaimer-box {
+  background: #132F3B;
+  border: 1px solid #224E60;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 11.5px;
+  color: #E2EBE9;
+  margin-top: 14px;
+}
+
+@media(max-width: 850px) {
+  .activity-grid { grid-template-columns: 1fr; }
+  .hero { grid-template-columns: 1fr; text-align: center; }
+  .town-grid { grid-template-columns: repeat(2, 1fr); }
+  .word-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      🧭 THE EXPLORER'S <span>MAP</span>
+    </div>
+    <div class="compass-badge">N • 🧭 • E</div>
+    <nav aria-label="Main navigation">
+      <button class="nav-btn active" data-page="home">🏠 Home</button>
+      <button class="nav-btn" data-page="canva">🗺️ 1. Discover & Listen</button>
+      <button class="nav-btn" data-page="wordwall">🎮 2. Wordwall</button>
+      <button class="nav-btn" data-page="genially">🧭 3. Route Rescue</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HOME PAGE -->
+  <section id="home" class="page active">
+    <div class="hero">
+      <div>
+        <span class="eyebrow">YEAR 4 ENGLISH • ASKING & GIVING DIRECTIONS</span>
+        <h1>Explore the Town.<br>Find Your Way!</h1>
+        <p>Hello, young explorers! Today, you will discover places in town, learn useful direction words and help a tourist find the right way.</p>
+        
+        <div class="badge-strip">
+          <span>🏫 School</span>
+          <span>🏥 Hospital</span>
+          <span>🧭 Directions</span>
+          <span>🛝 Park</span>
+        </div>
+
+        <button class="btn primary" data-go="canva">START YOUR ADVENTURE 🧭</button>
+      </div>
+      <div class="hero-art" aria-hidden="true">🏫 🏥 🛝<br>🧭 📍 🗺️</div>
+    </div>
+
+    <section class="section">
+      <div class="section-heading">
+        <span class="eyebrow">YOUR LEARNING JOURNEY</span>
+        <h2>Three Fun Activities</h2>
+        <p>Complete the activities in order. Read the instructions before you begin.</p>
+      </div>
+
+      <div class="activity-grid">
+        <article class="activity-card">
+          <div class="activity-icon">🗺️</div>
+          <span class="eyebrow">ACTIVITY 1</span>
+          <h3>Discover, Learn & Listen</h3>
+          <p>Explore the town, learn place names and direction words, then listen and follow directions.</p>
+          <button class="btn secondary" data-go="canva">LET'S EXPLORE ➡️</button>
+        </article>
+
+        <article class="activity-card">
+          <div class="activity-icon">🎮</div>
+          <span class="eyebrow">ACTIVITY 2</span>
+          <h3>Where Am I?</h3>
+          <p>Read the clues and choose the correct place in town in the Wordwall game.</p>
+          <button class="btn secondary" data-go="wordwall">PLAY WORDWALL ➡️</button>
+        </article>
+
+        <article class="activity-card">
+          <div class="activity-icon">🧭</div>
+          <span class="eyebrow">ACTIVITY 3</span>
+          <h3>Route Rescue: The Lost Tourist</h3>
+          <p>Use what you have learned to help a tourist find the right places.</p>
+          <button class="btn secondary" data-go="genially">PLAY GENIALLY ➡️</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <h2>Our Learning Goal 🎯</h2>
+      <p>By the end of these activities, you should be able to name familiar places, understand simple directions and use direction words to guide someone.</p>
+    </section>
+  </section>
+
+  <!-- ACTIVITY 1 PAGE -->
+  <section id="canva" class="page">
+    <span class="eyebrow">ACTIVITY 1 OF 3</span>
+    <h1 class="page-title">Discover, Learn & Listen</h1>
+    <p class="lead">Let's explore our town and learn how to give directions. Complete the three small steps below.</p>
+
+    <div class="instruction">
+      <h3>💡 How to complete this activity</h3>
+      <ol>
+        <li>First, look carefully at the town map and find the places you know.</li>
+        <li>Next, choose a building to learn its name and what people do there.</li>
+        <li>Then, read and say the direction words aloud.</li>
+        <li>Finally, listen to the directions and answer the questions.</li>
+      </ol>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="section">
+      <div class="section-heading">
+        <span class="eyebrow">STEP 1</span>
+        <h2>Discover the Town</h2>
+        <p>Tap a place on the map to hear its name and learn what it is.</p>
+      </div>
+      <div class="town-grid" id="town-grid">
+        <!-- Injected dynamically via JS -->
+      </div>
+      <div class="detail" id="place-detail" aria-live="polite">
+        <div>
+          <strong id="place-title">School</strong>
+          <p id="place-desc" style="margin:0; font-size:13px;">A school is a place where children learn.</p>
+        </div>
+        <button class="btn secondary" id="speak-place-btn">🔊 Speak</button>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="section">
+      <div class="section-heading">
+        <span class="eyebrow">STEP 2</span>
+        <h2>Learn Direction Words</h2>
+        <p>Look at each symbol. Tap to hear how to say it aloud.</p>
+      </div>
+      <div class="word-grid" id="word-grid">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="section">
+      <div class="section-heading">
+        <span class="eyebrow">STEP 3</span>
+        <h2>Listen & Navigate</h2>
+        <p>Listen carefully to the audio directions. You can play them again.</p>
+      </div>
+
+      <div class="audio-box">
+        <h3>Directions Audio 🔊</h3>
+        <p><em>"Start at the school. Go straight. Turn left at the park. The hospital is on your right."</em></p>
+        <div class="audio-controls">
+          <button class="btn secondary" id="play-audio">▶️ PLAY DIRECTIONS</button>
+          <button class="btn light" id="replay-audio">🔄 REPLAY</button>
+        </div>
+        <p id="audio-status" style="font-size: 12px; color: var(--muted); margin-top: 8px;">Press play to hear the directions.</p>
+      </div>
+
+      <div id="listening-questions">
+        <!-- Injected via JS -->
+      </div>
+
+      <button class="btn primary" id="check-listening" style="width:100%; margin-top: 10px;">CHECK MY ANSWERS</button>
+      <div id="listen-feedback" class="feedback" style="display:none;"></div>
+    </section>
+
+    <div class="section" style="display:flex; justify-content:space-between;">
+      <button class="btn light" data-go="home">⬅️ HOME</button>
+      <button class="btn secondary" data-go="wordwall">NEXT: WORDWALL ➡️</button>
+    </div>
+  </section>
+
+  <!-- ACTIVITY 2 PAGE -->
+  <section id="wordwall" class="page">
+    <span class="eyebrow">ACTIVITY 2 OF 3</span>
+    <h1 class="page-title">Where Am I?</h1>
+    <p class="lead">Let's play the Wordwall game! Read each clue and find the correct place in town.</p>
+
+    <div class="instruction">
+      <h3>💡 How to play</h3>
+      <ol>
+        <li>First, click the <strong>Start</strong> button in the game below.</li>
+        <li>Next, read the clue carefully.</li>
+        <li>Then, choose the place that matches the clue.</li>
+        <li>Keep going until you finish the game. Do your best!</li>
+      </ol>
+    </div>
+
+    <div class="embed-wrap">
+      <div class="embed-top">
+        <div>
+          <strong>Wordwall: Where Am I?</strong>
+          <p>Read the clue and choose the correct answer.</p>
+        </div>
+        <a class="btn primary" href="https://wordwall.net/resource/123111487?wwmethod=link" target="_blank" rel="noopener">OPEN WORDWALL ↗️</a>
+      </div>
+      <iframe class="embed-frame" src="https://wordwall.net/resource/123111487?wwmethod=link" title="Wordwall game" loading="lazy"></iframe>
+    </div>
+
+    <!-- Native Practice Backup -->
+    <div class="sim-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>🧩 Interactive Clue Practice</h3>
+        <button class="btn light" id="toggle-clue-practice">Toggle Practice</button>
+      </div>
+      <div id="clue-practice-area" style="display:none; margin-top:14px;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <div class="section" style="display:flex; justify-content:space-between;">
+      <button class="btn light" data-go="canva">⬅️ ACT 1</button>
+      <button class="btn secondary" data-go="genially">NEXT: ROUTE RESCUE ➡️</button>
+    </div>
+  </section>
+
+  <!-- ACTIVITY 3 PAGE -->
+  <section id="genially" class="page">
+    <span class="eyebrow">ACTIVITY 3 OF 3</span>
+    <h1 class="page-title">Route Rescue: The Lost Tourist</h1>
+    <p class="lead">A tourist is lost in our town! Become a helpful guide and help the tourist find the right places.</p>
+
+    <div class="instruction">
+      <h3>💡 How to play</h3>
+      <ol>
+        <li>First, read the mission carefully.</li>
+        <li>Next, look at the map and the choices on the screen.</li>
+        <li>Then, choose the correct route to help the tourist.</li>
+        <li>Complete each challenge and try to rescue the tourist. Good luck, explorer!</li>
+      </ol>
+    </div>
+
+    <div class="embed-wrap">
+      <div class="embed-top">
+        <div>
+          <strong>Genially: Route Rescue</strong>
+          <p>Use your direction words to guide the tourist.</p>
+        </div>
+        <a class="btn primary" href="https://view.genially.com/6aebd5b058c0b5120094a107" target="_blank" rel="noopener">OPEN GENIALLY ↗️</a>
+      </div>
+      <iframe class="embed-frame" src="https://view.genially.com/6aebd5b058c0b5120094a107" title="Genially game" loading="lazy"></iframe>
+    </div>
+
+    <!-- Native Route Rescue Simulator Backup -->
+    <div class="sim-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>🧭 Route Rescue Simulator</h3>
+        <button class="btn light" id="toggle-route-sim">Toggle Simulator</button>
+      </div>
+      <div id="route-sim-area" style="display:none; margin-top:14px;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <div class="section panel" style="text-align:center; margin-top:24px;">
+      <h2>⭐ Well done, young explorer! ⭐</h2>
+      <p>You have completed all three activities. Remember to use polite words and clear directions when helping someone find a place.</p>
+      <button class="btn primary" data-go="home">BACK TO HOME</button>
+    </div>
+
+    <div class="section" style="display:flex; justify-content:space-between;">
+      <button class="btn light" data-go="wordwall">⬅️ WORDWALL</button>
+      <button class="btn primary" data-go="home">FINISH HOME</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>THE EXPLORER'S MAP</strong>
+  <p>Learning English, one adventure at a time.</p>
+  <div class="author-tag">AZIM ZAID • INSTITUT PENDIDIKAN GURU KAMPUS KOTA BHARU</div>
+  <p>© 2026 The Explorer's Map. All rights reserved.</p>
+  <div class="disclaimer-box">
+    ℹ️ Disclaimer: This website is made for educational and informational purposes only.
+  </div>
+</footer>
+
+<script>
+// --- DATA MODELS ---
+const townPlaces = [
+  { id: "school", name: "School", emoji: "🏫", description: "A school is a place where children learn." },
+  { id: "hospital", name: "Hospital", emoji: "🏥", description: "A hospital is a place where doctors and nurses help sick people." },
+  { id: "library", name: "Library", emoji: "📚", description: "A library is a place where people read and borrow books." },
+  { id: "park", name: "Park", emoji: "🛝", description: "A park is a place where people play and enjoy nature." },
+  { id: "police", name: "Police Station", emoji: "🚓", description: "A police station is where police officers work and help people." },
+  { id: "supermarket", name: "Supermarket", emoji: "🛒", description: "A supermarket is a place where people buy food and other things." },
+  { id: "post_office", name: "Post Office", emoji: "📮", description: "A post office is a place where people send letters and parcels." },
+  { id: "restaurant", name: "Restaurant", emoji: "🍽️", description: "A restaurant is a place where people buy and eat meals." }
+];
+
+const directionWords = [
+  { id: "straight", phrase: "Go straight", symbol: "⬆️", meaning: "Keep moving forward in the same direction." },
+  { id: "turn_left", phrase: "Turn left", symbol: "⬅️", meaning: "Change your direction towards your left side." },
+  { id: "turn_right", phrase: "Turn right", symbol: "➡️", meaning: "Change your direction towards your right side." },
+  { id: "cross_road", phrase: "Cross the road", symbol: "🚶‍♂️➡️", meaning: "Move safely across from one side to the other." },
+  { id: "next_to", phrase: "Next to", symbol: "📍📍", meaning: "Directly beside another building or place." },
+  { id: "opposite", phrase: "Opposite", symbol: "↔️", meaning: "Facing across the street from another place." }
+];
+
+const listeningQuestions = [
+  { question: "1. Where does the journey start?", options: ["School", "Library", "Post Office"], correct: 0 },
+  { question: "2. Which direction should you turn?", options: ["Turn right", "Turn left", "Go backwards"], correct: 1 },
+  { question: "3. What is the final destination?", options: ["Park", "Hospital", "Restaurant"], correct: 1 }
+];
+
+const whereAmIClues = [
+  { id: 1, clue: "I am a quiet building full of storybooks and reading desks. People come here to borrow books.", options: ["Library", "Restaurant", "Supermarket"], answer: "Library" },
+  { id: 2, clue: "Nurses and doctors work here with ambulances parked outside. People come here when unwell.", options: ["Park", "Hospital", "School"], answer: "Hospital" },
+  { id: 3, clue: "You can see green grass, tall trees, and swings. Children run around and families picnic here.", options: ["Police Station", "Park", "Post Office"], answer: "Park" }
+];
+
+const rescueMissions = [
+  {
+    saying: '"Excuse me! I just arrived at the School and I urgently need to visit the Hospital. How do I get there?"',
+    start: "School", dest: "Hospital",
+    options: [
+      "Go straight, turn left at the park, and the hospital is on your right.",
+      "Turn right immediately and walk into the river.",
+      "Go backwards to your house and sleep."
+    ],
+    correct: 0, tip: "Clear directions state the landmark (park) and the turn side (left)!"
+  },
+  {
+    saying: '"Hello young guide! I am at the Library and want to send a postcard home from the Post Office."',
+    start: "Library", dest: "Post Office",
+    options: [
+      "Turn around and do 10 jumping jacks.",
+      "Cross the road, go straight past the supermarket, and the post office is next to the bank.",
+      "Walk inside the bookshelf."
+    ],
+    correct: 1, tip: '"Cross the road" and "next to" are key spatial prepositions!'
+  }
+];
+
+// --- NAVIGATION & SPEECH ---
+const pages = ["home", "canva", "wordwall", "genially"];
+function showPage(id) {
+  pages.forEach(p => document.getElementById(p).classList.toggle("active", p === id));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.page === id));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("[data-page], [data-go]").forEach(b => {
+  b.addEventListener("click", () => showPage(b.dataset.page || b.dataset.go));
+});
+
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-GB";
+  u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+
+// --- INITIALIZE STEP 1 & STEP 2 ---
+let currentSelectedPlace = townPlaces[0];
+
+const townGrid = document.getElementById("town-grid");
+townPlaces.forEach((p, idx) => {
+  const btn = document.createElement("button");
+  btn.className = `place ${idx === 0 ? 'selected' : ''}`;
+  btn.innerHTML = `<span class="emoji">${p.emoji}</span><strong>${p.name}</strong>`;
+  btn.onclick = () => {
+    document.querySelectorAll(".place").forEach(x => x.classList.remove("selected"));
+    btn.classList.add("selected");
+    currentSelectedPlace = p;
+    document.getElementById("place-title").textContent = p.name;
+    document.getElementById("place-desc").textContent = p.description;
+    speak(`${p.name}. ${p.description}`);
+  };
+  townGrid.appendChild(btn);
+});
+
+document.getElementById("speak-place-btn").onclick = () => {
+  speak(`${currentSelectedPlace.name}. ${currentSelectedPlace.description}`);
+};
+
+const wordGrid = document.getElementById("word-grid");
+directionWords.forEach(d => {
+  const card = document.createElement("article");
+  card.className = "word-card";
+  card.innerHTML = `<div class="arrow">${d.symbol}</div><h3>${d.phrase}</h3><p>${d.meaning}</p>`;
+  card.onclick = () => speak(`${d.phrase}. ${d.meaning}`);
+  wordGrid.appendChild(card);
+});
+
+// --- AUDIO LISTENING ---
+const listeningScript = "Start at the school. Go straight. Turn left at the park. The hospital is on your right.";
+document.getElementById("play-audio").onclick = () => {
+  document.getElementById("audio-status").textContent = "Listening...";
+  speak(listeningScript);
+};
+document.getElementById("replay-audio").onclick = () => {
+  speak(listeningScript);
+};
+
+const qContainer = document.getElementById("listening-questions");
+const userListeningAnswers = {};
+
+listeningQuestions.forEach((q, qIdx) => {
+  const wrap = document.createElement("div");
+  wrap.className = "question";
+  wrap.innerHTML = `<h3>${q.question}</h3><div class="answers" id="ans-${qIdx}"></div>`;
+  qContainer.appendChild(wrap);
+
+  const ansDiv = wrap.querySelector(`#ans-${qIdx}`);
+  q.options.forEach((opt, oIdx) => {
+    const btn = document.createElement("button");
+    btn.className = "answer";
+    btn.textContent = opt;
+    btn.onclick = () => {
+      ansDiv.querySelectorAll(".answer").forEach(a => a.classList.remove("selected"));
+      btn.classList.add("selected");
+      userListeningAnswers[qIdx] = oIdx;
+    };
+    ansDiv.appendChild(btn);
+  });
+});
+
+document.getElementById("check-listening").onclick = () => {
+  const fb = document.getElementById("listen-feedback");
+  fb.style.display = "block";
+  if (Object.keys(userListeningAnswers).length < listeningQuestions.length) {
+    fb.className = "feedback error";
+    fb.textContent = "Please answer all three questions first.";
+    return;
+  }
+  let score = 0;
+  listeningQuestions.forEach((q, i) => {
+    if (userListeningAnswers[i] === q.correct) score++;
+  });
+
+  if (score === 3) {
+    fb.className = "feedback success";
+    fb.textContent = "🎉 Excellent! You followed all the directions correctly!";
+  } else {
+    fb.className = "feedback error";
+    fb.textContent = `Good try! You got ${score} out of 3. Listen again and try once more.`;
+  }
+};
+
+// --- BACKUP PRACTICE INITS ---
+document.getElementById("toggle-clue-practice").onclick = () => {
+  const area = document.getElementById("clue-practice-area");
+  area.style.display = area.style.display === "none" ? "block" : "none";
+  if (area.style.display === "block" && area.children.length === 0) {
+    whereAmIClues.forEach(c => {
+      const card = document.createElement("div");
+      card.className = "sim-card";
+      card.innerHTML = `<p><strong>Clue:</strong> "${c.clue}"</p>`;
+      c.options.forEach(opt => {
+        const b = document.createElement("button");
+        b.className = "answer";
+        b.style.margin = "4px";
+        b.textContent = opt;
+        b.onclick = () => {
+          if (opt === c.answer) {
+            b.className = "answer correct";
+            speak("Correct!");
+          } else {
+            b.className = "answer wrong";
+          }
+        };
+        card.appendChild(b);
+      });
+      area.appendChild(card);
+    });
+  }
+};
+
+document.getElementById("toggle-route-sim").onclick = () => {
+  const area = document.getElementById("route-sim-area");
+  area.style.display = area.style.display === "none" ? "block" : "none";
+  if (area.style.display === "block" && area.children.length === 0) {
+    rescueMissions.forEach(m => {
+      const card = document.createElement("div");
+      card.className = "sim-card";
+      card.innerHTML = `<p><strong>Tourist:</strong> ${m.saying}</p>`;
+      m.options.forEach((opt, idx) => {
+        const b = document.createElement("button");
+        b.className = "answer";
+        b.style.display = "block";
+        b.style.margin = "6px 0";
+        b.textContent = opt;
+        b.onclick = () => {
+          if (idx === m.correct) {
+            b.className = "answer correct";
+            speak("Great job! Safe directions.");
+          } else {
+            b.className = "answer wrong";
+          }
+        };
+        card.appendChild(b);
+      });
+      area.appendChild(card);
+    });
+  }
+};
+</script>
+</body>
+</html>
